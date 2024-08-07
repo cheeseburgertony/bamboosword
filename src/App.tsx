@@ -7,7 +7,7 @@ function App() {
       <Button>default</Button>
       <Button btnType={ButtonType.Primary}>primary</Button>
       <Button btnType={ButtonType.Danger}>danger</Button>
-      <Button size={ButtonSize.Large}>large</Button>
+      <Button size={ButtonSize.Large}>verylarge</Button>
       <Button size={ButtonSize.Small}>small</Button>
       <Button disabled>disabled btn</Button>
       <Button btnType={ButtonType.Link} href='https://www.baidu.com'>link</Button>
