@@ -17,7 +17,7 @@
       text-decoration: none;
     }
 
-    &.disabled {
+    &.is-disabled {
       color: $menu-item-disabled-color;
       pointer-events: none;
       cursor: default;
