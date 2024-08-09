@@ -24,7 +24,7 @@
     }
 
     &:hover,
-    &.is-actived {
+    &.is-active {
       color: $menu-item-active-color;
       border-bottom: $menu-item-active-border-width solid $menu-item-active-color;
     }
@@ -39,7 +39,7 @@
   .menu-item {
     border-left: $menu-item-active-border-width solid transparent;
 
-    &.is-actived,
+    &.is-active,
     &:hover {
       border-bottom: 0px;
       border-left: $menu-item-active-border-width solid $menu-item-active-color;
