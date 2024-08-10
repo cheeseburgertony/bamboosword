@@ -4,8 +4,6 @@ import React, { memo } from 'react'
 export type ButtonSize = 'lg' | 'sm'
 export type ButtonType = 'primary' | 'default' | 'danger' | 'link'
 
-
-
 interface BaseButtonProps {
   className?: string;
   disabled?: boolean;
@@ -20,7 +18,7 @@ type NativeButtonProps = BaseButtonProps & React.ButtonHTMLAttributes<HTMLElemen
 type AnchorButtonProps = BaseButtonProps & React.AnchorHTMLAttributes<HTMLElement>
 export type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>
 
-const Button: React.FC<ButtonProps> = memo((props) => {
+export const Button: React.FC<ButtonProps> = memo((props) => {
   const {
     btnType = 'default',
     disabled = false,
