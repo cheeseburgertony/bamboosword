@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import Menu, { MenuProps } from "./menu"
-import MenuItem from "./menuitem"
+import MenuItem from "./menu-item"
 
 
 const testProps: MenuProps = {

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { createContext, memo, useState } from 'react'
-import { MenuItemProps } from './menuitem';
+import { MenuItemProps } from './menu-item';
 
 type MenuMode = 'horizontal' | 'vertical'
 type SelectCallback = (selectIndex: number) => void
@@ -28,7 +28,8 @@ const Menu: React.FC<MenuProps> = memo((props) => {
   const [activeIndex, setActiveIndex] = useState(defaultIndex)
 
   const classes = classNames('bamboosword-menu', className, {
-    'menu-vertical': mode === 'vertical'
+    'menu-vertical': mode === 'vertical',
+    'menu-horizontal': mode !== 'vertical'
   })
 
   const handleClick = (index: number) => {
@@ -47,7 +48,7 @@ const Menu: React.FC<MenuProps> = memo((props) => {
     return React.Children.map(children, (child, index) => {
       const childElement = child as React.FunctionComponentElement<MenuItemProps>
       const { displayName } = childElement.type
-      if (displayName === 'MenuItem') {
+      if (displayName === 'MenuItem' || displayName === 'SubMenu') {
         // 自动添加index
         return React.cloneElement(childElement, { index })
       } else {

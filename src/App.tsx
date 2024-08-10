@@ -1,7 +1,8 @@
 import React from 'react';
 import Button, { ButtonSize, ButtonType } from './components/Button/button';
 import Menu from './components/Menu/menu';
-import MenuItem from './components/Menu/menuitem';
+import MenuItem from './components/Menu/menu-item';
+import SubMenu from './components/Menu/sub-menu';
 
 function App() {
   return (
@@ -16,7 +17,16 @@ function App() {
         <MenuItem >
           cool link3
         </MenuItem>
+        <SubMenu title='Subtitle'>
+          <MenuItem>
+            SubMenu1
+          </MenuItem>
+          <MenuItem>
+            SubMenu2
+          </MenuItem>
+        </SubMenu>
       </Menu>
+
 
       <Button>default</Button>
       <Button btnType={ButtonType.Primary}>primary</Button>
