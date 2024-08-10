@@ -11,7 +11,7 @@ library.add(fas)
 function App() {
   return (
     <div className="App">
-      <Icon icon='house' theme='danger' size='10x' />
+      <Icon icon='house' theme='primary' size='10x' />
       <Menu defaultIndex='0' onSelect={(index) => console.log(index)} mode='vertical' defaultOpenSubMenus={['3']}>
         <MenuItem >
           cool link
