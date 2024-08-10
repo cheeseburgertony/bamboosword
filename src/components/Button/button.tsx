@@ -1,17 +1,10 @@
 import classNames from 'classnames';
 import React, { memo } from 'react'
 
-export enum ButtonSize {
-  Large = 'lg',
-  Small = 'sm'
-}
+export type ButtonSize = 'lg' | 'sm'
+export type ButtonType = 'primary' | 'default' | 'danger' | 'link'
 
-export enum ButtonType {
-  Primary = 'primary',
-  Default = 'default',
-  Danger = 'danger',
-  Link = 'link'
-}
+
 
 interface BaseButtonProps {
   className?: string;
@@ -29,7 +22,7 @@ export type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>
 
 const Button: React.FC<ButtonProps> = memo((props) => {
   const {
-    btnType = ButtonType.Default,
+    btnType = 'default',
     disabled = false,
     className,
     size,
@@ -42,10 +35,10 @@ const Button: React.FC<ButtonProps> = memo((props) => {
   const classes = classNames('btn', className, {
     [`btn-${btnType}`]: btnType,
     [`btn-${size}`]: size,
-    disabled: (btnType === ButtonType.Link) && disabled
+    disabled: (btnType === 'link') && disabled
   })
 
-  if (btnType === ButtonType.Link && href) {
+  if (btnType === 'link' && href) {
     return (
       <a
         className={classes}

@@ -5,14 +5,15 @@ import { CSSTransitionProps } from 'react-transition-group/CSSTransition'
 type AnimationName = 'zoom-in-top' | 'zoom-in-right' | 'zoom-in-bottom' | 'zoom-in-left'
 interface CustomProps {
   animation?: AnimationName;
-  children?: React.ReactNode
+  children?: React.ReactNode;
+  wrapper?: boolean
 }
 
 type TransitionProps = CustomProps & CSSTransitionProps
 
 
 const Transition: React.FC<TransitionProps> = memo((props) => {
-  const { children, animation, classNames, ...restProps } = props
+  const { children, animation, classNames, wrapper, ...restProps } = props
 
   return (
     <CSSTransition
@@ -21,7 +22,7 @@ const Transition: React.FC<TransitionProps> = memo((props) => {
       appear
       {...restProps}
     >
-      {children}
+      {wrapper ? <div>{children}</div> : children}
     </CSSTransition>
   )
 })

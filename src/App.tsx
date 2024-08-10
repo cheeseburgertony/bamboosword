@@ -1,13 +1,16 @@
-import React from 'react';
-import Button, { ButtonSize, ButtonType } from './components/Button/button';
+import React, { useState } from 'react';
+import Button from './components/Button/button';
 import Menu from './components/Menu/menu';
 import MenuItem from './components/Menu/menu-item';
 import SubMenu from './components/Menu/sub-menu';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
+import Transition from './components/Transition/transition';
 library.add(fas)
 
 function App() {
+  const [show, setShow] = useState(false)
+
   return (
     <div className="App">
       <Menu defaultIndex='0' onSelect={(index) => console.log(index)} defaultOpenSubMenus={['3']}>
@@ -30,15 +33,34 @@ function App() {
         </SubMenu>
       </Menu>
 
+      <Button size='lg' btnType='primary' onClick={e => setShow(!show)}>Toggle</Button>
+      <Transition
+        in={show}
+        timeout={300}
+        animation='zoom-in-left'
+      >
+        <div>
+          <p>Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello </p>
+          <p>Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello </p>
+          <p>Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello </p>
+          <p>Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello </p>
+          <p>Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello </p>
+          <p>Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello </p>
+          <p>Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello </p>
+          <p>Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello </p>
+          <p>Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello </p>
+          <p>Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello </p>
+        </div>
+      </Transition>
+      <Transition
+        in={show}
+        timeout={300}
+        animation='zoom-in-left'
+        wrapper
+      >
+        <Button size='lg' btnType='default'>A Button</Button>
+      </Transition>
 
-      <Button>default</Button>
-      <Button btnType={ButtonType.Primary}>primary</Button>
-      <Button btnType={ButtonType.Danger}>danger</Button>
-      <Button size={ButtonSize.Large}>verylarge</Button>
-      <Button size={ButtonSize.Small}>small</Button>
-      <Button disabled>disabled btn</Button>
-      <Button btnType={ButtonType.Link} href='https://www.baidu.com'>link</Button>
-      <Button btnType={ButtonType.Link} disabled href='https://www.baidu.com'>disabled link</Button>
     </div>
   );
 }
