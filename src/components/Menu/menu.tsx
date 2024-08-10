@@ -19,6 +19,7 @@ export interface MenuProps {
 interface IMenuContext {
   index: number;
   onSelect?: SelectCallback;
+  mode?: MenuMode;
 }
 // 创建Menu的context，方便传递给子组件
 export const MenuContext = createContext<IMenuContext>({ index: 0 })
@@ -40,7 +41,8 @@ const Menu: React.FC<MenuProps> = memo((props) => {
   // context传递的值
   const passedContext: IMenuContext = {
     index: activeIndex,
-    onSelect: handleClick
+    onSelect: handleClick,
+    mode: mode
   }
 
   // 判断传入的children是否符合规定
