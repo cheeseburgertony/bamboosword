@@ -10,7 +10,7 @@ library.add(fas)
 function App() {
   return (
     <div className="App">
-      <Menu defaultIndex='0' onSelect={(index) => console.log(index)} mode='vertical' defaultOpenSubMenus={['3']}>
+      <Menu defaultIndex='0' onSelect={(index) => console.log(index)} defaultOpenSubMenus={['3']}>
         <MenuItem >
           cool link
         </MenuItem>

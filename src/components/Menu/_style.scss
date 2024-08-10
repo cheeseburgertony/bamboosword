@@ -63,12 +63,12 @@
   }
 
   .bamboosword-submenu {
-    display: none;
+    // display: none;
     list-style: none;
     padding-left: 0;
     white-space: nowrap;
 
-    transition: $menu-transition;
+    // transition: $menu-transition;
 
     .menu-item {
       padding: $menu-item-padding-y $menu-item-padding-x;
@@ -83,9 +83,9 @@
     }
   }
 
-  .bamboosword-submenu.menu-opened {
-    display: block;
-  }
+  // .bamboosword-submenu.menu-opened {
+  //   display: block;
+  // }
 }
 
 .menu-horizontal {
