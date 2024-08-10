@@ -3,29 +3,31 @@ import React, { createContext, memo, useState } from 'react'
 import { MenuItemProps } from './menu-item';
 
 type MenuMode = 'horizontal' | 'vertical'
-type SelectCallback = (selectIndex: number) => void
+type SelectCallback = (selectIndex: string) => void
 
 // Menu的props类型
 export interface MenuProps {
-  defaultIndex?: number;
+  defaultIndex?: string;
   className?: string;
   mode?: MenuMode;
   style?: React.CSSProperties;
   onSelect?: SelectCallback;
-  children?: React.ReactNode
+  children?: React.ReactNode;
+  defaultOpenSubMenus?: string[];
 }
 
 // Menu的context类型
 interface IMenuContext {
-  index: number;
+  index: string;
   onSelect?: SelectCallback;
   mode?: MenuMode;
+  defaultOpenSubMenus?: string[];
 }
 // 创建Menu的context，方便传递给子组件
-export const MenuContext = createContext<IMenuContext>({ index: 0 })
+export const MenuContext = createContext<IMenuContext>({ index: '0' })
 
 const Menu: React.FC<MenuProps> = memo((props) => {
-  const { className, defaultIndex = 0, mode = 'horizontal', style, children, onSelect } = props
+  const { className, defaultIndex = '0', mode = 'horizontal', style, children, onSelect, defaultOpenSubMenus } = props
   const [activeIndex, setActiveIndex] = useState(defaultIndex)
 
   const classes = classNames('bamboosword-menu', className, {
@@ -33,7 +35,7 @@ const Menu: React.FC<MenuProps> = memo((props) => {
     'menu-horizontal': mode !== 'vertical'
   })
 
-  const handleClick = (index: number) => {
+  const handleClick = (index: string) => {
     setActiveIndex(index)
     if (onSelect) onSelect(index)
   }
@@ -42,7 +44,8 @@ const Menu: React.FC<MenuProps> = memo((props) => {
   const passedContext: IMenuContext = {
     index: activeIndex,
     onSelect: handleClick,
-    mode: mode
+    mode,
+    defaultOpenSubMenus
   }
 
   // 判断传入的children是否符合规定
@@ -52,7 +55,7 @@ const Menu: React.FC<MenuProps> = memo((props) => {
       const { displayName } = childElement.type
       if (displayName === 'MenuItem' || displayName === 'SubMenu') {
         // 自动添加index
-        return React.cloneElement(childElement, { index })
+        return React.cloneElement(childElement, { index: index.toString() })
       } else {
         console.error('Warning: Menu has a child which is not a MenuItem component')
       }
