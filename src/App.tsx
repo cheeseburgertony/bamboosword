@@ -3,11 +3,16 @@ import Button, { ButtonSize, ButtonType } from './components/Button/button';
 import Menu from './components/Menu/menu';
 import MenuItem from './components/Menu/menu-item';
 import SubMenu from './components/Menu/sub-menu';
+import Icon from './components/Icon/icon';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+library.add(fas)
 
 function App() {
   return (
     <div className="App">
-      <Menu defaultIndex='0' onSelect={(index) => console.log(index)}  mode='vertical' defaultOpenSubMenus={['3']}>
+      <Icon icon='house' theme='danger' size='10x' />
+      <Menu defaultIndex='0' onSelect={(index) => console.log(index)} mode='vertical' defaultOpenSubMenus={['3']}>
         <MenuItem >
           cool link
         </MenuItem>

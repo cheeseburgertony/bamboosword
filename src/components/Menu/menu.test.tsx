@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import Menu, { MenuProps } from "./menu"
 import MenuItem from "./menu-item"
 import SubMenu from "./sub-menu"
-import { wait } from "@testing-library/user-event/dist/utils"
+// import { wait } from "@testing-library/user-event/dist/utils"
 
 
 const testProps: MenuProps = {
