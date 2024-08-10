@@ -9,12 +9,14 @@ const defaultProps = {
 const testProps: ButtonProps = {
   btnType: 'primary',
   size: 'lg',
-  className: 'klass'
+  className: 'klass',
+  children: 'test'
 }
 
 const disabledProps: ButtonProps = {
   disabled: true,
-  onClick: jest.fn()
+  onClick: jest.fn(),
+  children: 'disabled'
 }
 
 describe('test Button component', () => {
