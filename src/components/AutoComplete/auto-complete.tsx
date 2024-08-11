@@ -1,7 +1,7 @@
-import React, { ChangeEvent, KeyboardEvent, memo, ReactElement, useEffect, useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, memo, ReactElement, useEffect, useRef, useState } from 'react'
 import Input, { InputProps } from '../Input/input'
 import Icon from '../Icon/icon';
-import useDebounce from '../../hooks/useDebounce';
+import { useClickOutside, useDebounce } from '../../hooks';
 import classNames from 'classnames';
 
 interface DataSourceObject {
@@ -23,9 +23,13 @@ export const AutoComplete: React.FC<AutoCompleteProps> = memo((props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [highLightIndex, setHighLightIndex] = useState(-1)
 
+  const triggerSearch = useRef(false)
+  const componentRef = useRef<HTMLDivElement>(null)
+
+  useClickOutside(componentRef, () => setSuggestions([]))
   const debounceValue = useDebounce(inputValue, 500)
   useEffect(() => {
-    if (debounceValue) {
+    if (debounceValue && triggerSearch.current) {
       const res = fetchSuggestions(debounceValue)
       if (res instanceof Promise) {
         setIsLoading(true)
@@ -46,12 +50,16 @@ export const AutoComplete: React.FC<AutoCompleteProps> = memo((props) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim()
     setInputValue(value)
+    // 触发更新搜索
+    triggerSearch.current = true
   }
 
   const handleSelect = (item: DataSourceType) => {
     setInputValue(item.value)
     setSuggestions([])
     if (onSelect) onSelect(item)
+    // 不触发更新搜索
+    triggerSearch.current = false
   }
 
   const hightLightHandle = (index: number) => {
@@ -103,7 +111,7 @@ export const AutoComplete: React.FC<AutoCompleteProps> = memo((props) => {
 
 
   return (
-    <div className='bamboosword-auto-complete'>
+    <div className='bamboosword-auto-complete' ref={componentRef}>
       <Input
         value={inputValue}
         onChange={handleChange}
