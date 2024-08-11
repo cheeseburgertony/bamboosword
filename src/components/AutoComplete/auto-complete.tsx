@@ -1,127 +1,185 @@
-import React, { ChangeEvent, KeyboardEvent, memo, ReactElement, useEffect, useRef, useState } from 'react'
+import React, { FC, useState, ChangeEvent, KeyboardEvent, ReactElement, useEffect, useRef } from 'react'
+import classNames from 'classnames'
 import Input, { InputProps } from '../Input/input'
-import Icon from '../Icon/icon';
-import { useClickOutside, useDebounce } from '../../hooks';
-import classNames from 'classnames';
-
+import Icon from '../Icon/icon'
+import Transition from '../Transition/transition'
+import { useDebounce, useClickOutside } from '../../hooks/'
 interface DataSourceObject {
-  value: string
+  value: string;
 }
-
 export type DataSourceType<T = {}> = T & DataSourceObject
-
-export interface AutoCompleteProps extends Omit<InputProps, 'onSelect'> {
+export interface AutoCompleteProps extends Omit<InputProps, 'onSelect' | 'onChange'> {
+  /**
+   * 返回输入建议的方法，可以拿到当前的输入，然后返回同步的数组或者是异步的 Promise
+   * type DataSourceType<T = {}> = T & DataSourceObject
+   */
   fetchSuggestions: (str: string) => DataSourceType[] | Promise<DataSourceType[]>;
+  /** 点击选中建议项时触发的回调*/
   onSelect?: (item: DataSourceType) => void;
-  renderOption?: (item: DataSourceType | any) => ReactElement
+  /** 文本框发生改变的时候触发的事件*/
+  onChange?: (value: string) => void;
+  /**支持自定义渲染下拉项，返回 ReactElement */
+  renderOption?: (item: DataSourceType) => ReactElement;
 }
 
-export const AutoComplete: React.FC<AutoCompleteProps> = memo((props) => {
-  const { fetchSuggestions, onSelect, value, renderOption, ...restProps } = props
+/**
+ * 输入框自动完成功能。当输入值需要自动完成时使用，支持同步和异步两种方式
+ * 支持 Input 组件的所有属性 支持键盘事件选择
+ * ### 引用方法
+ * 
+ * ~~~js
+ * import { AutoComplete } from 'bamboosword'
+ * ~~~
+ */
+export const AutoComplete: FC<AutoCompleteProps> = (props) => {
+  const {
+    fetchSuggestions,
+    onSelect,
+    onChange,
+    value,
+    renderOption,
+    ...restProps
+  } = props
+
   const [inputValue, setInputValue] = useState(value as string)
-  const [suggestions, setSuggestions] = useState<DataSourceType[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [highLightIndex, setHighLightIndex] = useState(-1)
+  const [suggestions, setSugestions] = useState<DataSourceType[]>([])
+  const [loading, setLoading] = useState(false)
+  const [showDropdown, setShowDropdown] = useState(false)
+  const [highlightIndex, setHighlightIndex] = useState(-1)
 
   const triggerSearch = useRef(false)
   const componentRef = useRef<HTMLDivElement>(null)
 
-  useClickOutside(componentRef, () => setSuggestions([]))
-  const debounceValue = useDebounce(inputValue, 500)
+  // 点击外部关闭列表
+  useClickOutside(componentRef, () => { setSugestions([]) })
+
+  // 防抖处理
+  const debouncedValue = useDebounce(inputValue, 300)
   useEffect(() => {
-    if (debounceValue && triggerSearch.current) {
-      const res = fetchSuggestions(debounceValue)
-      if (res instanceof Promise) {
-        setIsLoading(true)
-        res.then(data => {
-          setIsLoading(false)
-          setSuggestions(data)
-          console.log(data);
+    if (debouncedValue && triggerSearch.current) {
+      setSugestions([])
+      const results = fetchSuggestions(debouncedValue)
+      if (results instanceof Promise) {
+        setLoading(true)
+        results.then(data => {
+          setLoading(false)
+          setSugestions(data)
+          if (data.length > 0) {
+            setShowDropdown(true)
+          }
         })
       } else {
-        setSuggestions(res)
+        setSugestions(results)
+        setShowDropdown(true)
+        if (results.length > 0) {
+          setShowDropdown(true)
+        }
       }
     } else {
-      setSuggestions([])
+      setShowDropdown(false)
     }
-    setHighLightIndex(-1)
-  }, [debounceValue, fetchSuggestions])
+    setHighlightIndex(-1)
+  }, [debouncedValue, fetchSuggestions])
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.trim()
-    setInputValue(value)
-    // 触发更新搜索
-    triggerSearch.current = true
-  }
-
-  const handleSelect = (item: DataSourceType) => {
-    setInputValue(item.value)
-    setSuggestions([])
-    if (onSelect) onSelect(item)
-    // 不触发更新搜索
-    triggerSearch.current = false
-  }
-
-  const hightLightHandle = (index: number) => {
+  // 修改成高亮
+  const highLightHandle = (index: number) => {
     if (index < 0) index = 0
-    if (index >= suggestions.length) index = suggestions.length - 1
-    setHighLightIndex(index)
+    if (index >= suggestions.length) {
+      index = suggestions.length - 1
+    }
+    setHighlightIndex(index)
   }
 
+  // 键盘事件
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-
+    console.log(e.code)
     switch (e.code) {
       case 'Enter':
-        if (suggestions[highLightIndex]) handleSelect(suggestions[highLightIndex])
+        if (suggestions[highlightIndex]) {
+          handleSelect(suggestions[highlightIndex])
+        }
         break
       case 'ArrowUp':
-        hightLightHandle(highLightIndex - 1)
+        highLightHandle(highlightIndex - 1)
         break
       case 'ArrowDown':
-        hightLightHandle(highLightIndex + 1)
-        break;
+        highLightHandle(highlightIndex + 1)
+        break
       case 'Escape':
-        setSuggestions([])
+        setShowDropdown(false)
         break
       default:
         break
     }
   }
 
+  // 输入框改变
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.trim()
+    // console.log('triggered the value', value)
+    setInputValue(value)
+    if (onChange) {
+      onChange(value)
+    }
+    triggerSearch.current = true
+  }
+
+  // 选择列表事件
+  const handleSelect = (item: DataSourceType) => {
+    setInputValue(item.value)
+    setShowDropdown(false)
+    if (onSelect) {
+      onSelect(item)
+    }
+    triggerSearch.current = false
+  }
+
+  // 自定义模板渲染
   const renderTemplate = (item: DataSourceType) => {
     return renderOption ? renderOption(item) : item.value
   }
 
-  const generationDropDown = () => {
+  // 渲染底部榜(搜索内容)
+  const generateDropdown = () => {
     return (
-      <ul>
-        {suggestions.map((item, index) => {
-          const cnames = classNames('suggestion-item', {
-            'item-highlighted': index === highLightIndex
-          })
-          return (
-            <li key={item.value} className={cnames} onClick={e => handleSelect(item)}>
-              {renderTemplate(item)}
-            </li>
-          )
-        })}
-      </ul>
+      <Transition
+        in={showDropdown || loading}
+        animation="zoom-in-top"
+        timeout={300}
+        onExited={() => { setSugestions([]) }}
+      >
+        <ul className="bamboosword-suggestion-list">
+          {loading &&
+            <div className="suggstions-loading-icon">
+              <Icon icon="spinner" spin />
+            </div>
+          }
+          {suggestions.map((item, index) => {
+            const cnames = classNames('suggestion-item', {
+              'is-active': index === highlightIndex
+            })
+            return (
+              <li key={index} className={cnames} onClick={() => handleSelect(item)}>
+                {renderTemplate(item)}
+              </li>
+            )
+          })}
+        </ul>
+      </Transition>
     )
   }
-
-
   return (
-    <div className='bamboosword-auto-complete' ref={componentRef}>
+    <div className="bamboosword-auto-complete" ref={componentRef}>
       <Input
+        {...restProps}
         value={inputValue}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        {...restProps}
       />
-      {isLoading && <ul><Icon icon='spinner' spin /></ul>}
-      {suggestions.length > 0 && generationDropDown()}
+      {generateDropdown()}
     </div>
   )
-})
+}
 
-export default AutoComplete
+export default AutoComplete;
+
