@@ -11,7 +11,7 @@ export interface MenuItemProps {
 }
 
 
-const MenuItem: React.FC<MenuItemProps> = memo((props) => {
+export const MenuItem: React.FC<MenuItemProps> = memo((props) => {
   const { className, disabled, index, style, children } = props
   const context = useContext(MenuContext)
 

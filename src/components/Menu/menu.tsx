@@ -26,7 +26,7 @@ interface IMenuContext {
 // 创建Menu的context，方便传递给子组件
 export const MenuContext = createContext<IMenuContext>({ index: '0' })
 
-const Menu: React.FC<MenuProps> = memo((props) => {
+export const Menu: React.FC<MenuProps> = memo((props) => {
   const { className, defaultIndex = '0', mode = 'horizontal', style, children, onSelect, defaultOpenSubMenus } = props
   const [activeIndex, setActiveIndex] = useState(defaultIndex)
 

@@ -14,12 +14,12 @@ export interface SubMenuProps {
   children?: React.ReactNode
 }
 
-const SubMenu: React.FC<SubMenuProps> = memo((props) => {
+export const SubMenu: React.FC<SubMenuProps> = memo((props) => {
   const { className, index, title, children } = props
 
   const context = useContext(MenuContext)
   const openedSubMenus = context.defaultOpenSubMenus as string[]
-  const isOpened = (index && context.mode === 'vertical') ? openedSubMenus.includes(index) : false
+  const isOpened = (index && context.mode === 'vertical') ? openedSubMenus?.includes(index) : false
 
   const [menuOpen, setMenuOpen] = useState(isOpened)
 
