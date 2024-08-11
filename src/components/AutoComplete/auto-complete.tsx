@@ -1,15 +1,22 @@
-import React, { ChangeEvent, memo, useState } from 'react'
+import React, { ChangeEvent, memo, ReactElement, useState } from 'react'
 import Input, { InputProps } from '../Input/input'
 
+interface DataSourceObject {
+  value: string
+}
+
+export type DataSourceType<T = {}> = T & DataSourceObject
+
 export interface AutoCompleteProps extends Omit<InputProps, 'onSelect'> {
-  fetchSuggestions: (str: string) => string[];
-  onSelect?: (item: string) => void
+  fetchSuggestions: (str: string) => DataSourceType[];
+  onSelect?: (item: DataSourceType) => void;
+  renderOption?: (item: any) => ReactElement
 }
 
 export const AutoComplete: React.FC<AutoCompleteProps> = memo((props) => {
-  const { fetchSuggestions, onSelect, value, ...restProps } = props
+  const { fetchSuggestions, onSelect, value, renderOption, ...restProps } = props
   const [inputValue, setInputValue] = useState(value)
-  const [suggestions, setSuggestions] = useState<string[]>([])
+  const [suggestions, setSuggestions] = useState<DataSourceType[]>([])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim()
@@ -23,24 +30,28 @@ export const AutoComplete: React.FC<AutoCompleteProps> = memo((props) => {
     }
   }
 
-  const handleClick = (item: string) => {
-    setInputValue(item)
+  const handleClick = (item: DataSourceType) => {
+    setInputValue(item.value)
     setSuggestions([])
     if (onSelect) onSelect(item)
   }
 
+  const renderTemplate = (item: DataSourceType) => {
+    return renderOption ? renderOption(item) : item.value
+  }
 
   const generationDropDown = () => {
     return (
       <ul>
         {suggestions.map(item => (
-          <li key={item} onClick={e => handleClick(item)}>
-            {item}
+          <li key={item.value} onClick={e => handleClick(item)}>
+            {renderTemplate(item)}
           </li>
         ))}
       </ul>
     )
   }
+
 
   return (
     <div className='bamboosword-auto-complete'>
