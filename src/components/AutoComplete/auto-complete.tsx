@@ -1,7 +1,8 @@
-import React, { ChangeEvent, memo, ReactElement, useEffect, useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, memo, ReactElement, useEffect, useState } from 'react'
 import Input, { InputProps } from '../Input/input'
 import Icon from '../Icon/icon';
 import useDebounce from '../../hooks/useDebounce';
+import classNames from 'classnames';
 
 interface DataSourceObject {
   value: string
@@ -20,8 +21,9 @@ export const AutoComplete: React.FC<AutoCompleteProps> = memo((props) => {
   const [inputValue, setInputValue] = useState(value as string)
   const [suggestions, setSuggestions] = useState<DataSourceType[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const debounceValue = useDebounce(inputValue,500)
+  const [highLightIndex, setHighLightIndex] = useState(-1)
 
+  const debounceValue = useDebounce(inputValue, 500)
   useEffect(() => {
     if (debounceValue) {
       const res = fetchSuggestions(debounceValue)
@@ -38,6 +40,7 @@ export const AutoComplete: React.FC<AutoCompleteProps> = memo((props) => {
     } else {
       setSuggestions([])
     }
+    setHighLightIndex(-1)
   }, [debounceValue, fetchSuggestions])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,10 +48,36 @@ export const AutoComplete: React.FC<AutoCompleteProps> = memo((props) => {
     setInputValue(value)
   }
 
-  const handleClick = (item: DataSourceType) => {
+  const handleSelect = (item: DataSourceType) => {
     setInputValue(item.value)
     setSuggestions([])
     if (onSelect) onSelect(item)
+  }
+
+  const hightLightHandle = (index: number) => {
+    if (index < 0) index = 0
+    if (index >= suggestions.length) index = suggestions.length - 1
+    setHighLightIndex(index)
+  }
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+
+    switch (e.code) {
+      case 'Enter':
+        if (suggestions[highLightIndex]) handleSelect(suggestions[highLightIndex])
+        break
+      case 'ArrowUp':
+        hightLightHandle(highLightIndex - 1)
+        break
+      case 'ArrowDown':
+        hightLightHandle(highLightIndex + 1)
+        break;
+      case 'Escape':
+        setSuggestions([])
+        break
+      default:
+        break
+    }
   }
 
   const renderTemplate = (item: DataSourceType) => {
@@ -58,11 +87,16 @@ export const AutoComplete: React.FC<AutoCompleteProps> = memo((props) => {
   const generationDropDown = () => {
     return (
       <ul>
-        {suggestions.map(item => (
-          <li key={item.value} onClick={e => handleClick(item)}>
-            {renderTemplate(item)}
-          </li>
-        ))}
+        {suggestions.map((item, index) => {
+          const cnames = classNames('suggestion-item', {
+            'item-highlighted': index === highLightIndex
+          })
+          return (
+            <li key={item.value} className={cnames} onClick={e => handleSelect(item)}>
+              {renderTemplate(item)}
+            </li>
+          )
+        })}
       </ul>
     )
   }
@@ -72,7 +106,8 @@ export const AutoComplete: React.FC<AutoCompleteProps> = memo((props) => {
     <div className='bamboosword-auto-complete'>
       <Input
         value={inputValue}
-        onChange={e => handleChange(e)}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
         {...restProps}
       />
       {isLoading && <ul><Icon icon='spinner' spin /></ul>}
