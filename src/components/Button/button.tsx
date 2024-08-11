@@ -20,14 +20,24 @@ export type ButtonType = 'primary' | 'default' | 'danger' | 'link'
 
 export type ButtonProps = {
   className?: string;
+  /** 设置 Button 的禁用 */
   disabled?: boolean;
+  /** 设置 Button 的尺寸 */
   size?: ButtonSize;
+  /** 设置 Button 的类型 */
   btnType?: ButtonType;
   children: React.ReactNode;
   href?: string;
 } & (React.ButtonHTMLAttributes<HTMLElement> & React.AnchorHTMLAttributes<HTMLElement>)
 
-
+/**
+ * 页面中最常用的的按钮元素，适合于完成特定的交互，支持 HTML button 和 a 链接 的所有属性
+ * ### 引用方法
+ * 
+ * ```javascript
+ * import { Button } from 'bamboosword'
+ * ```
+ */
 export const Button: React.FC<ButtonProps> = memo((props) => {
   const {
     btnType = 'default',
