@@ -1,6 +1,7 @@
-import React, { ChangeEvent, memo, ReactElement, useState } from 'react'
+import React, { ChangeEvent, memo, ReactElement, useEffect, useState } from 'react'
 import Input, { InputProps } from '../Input/input'
 import Icon from '../Icon/icon';
+import useDebounce from '../../hooks/useDebounce';
 
 interface DataSourceObject {
   value: string
@@ -16,20 +17,20 @@ export interface AutoCompleteProps extends Omit<InputProps, 'onSelect'> {
 
 export const AutoComplete: React.FC<AutoCompleteProps> = memo((props) => {
   const { fetchSuggestions, onSelect, value, renderOption, ...restProps } = props
-  const [inputValue, setInputValue] = useState(value)
+  const [inputValue, setInputValue] = useState(value as string)
   const [suggestions, setSuggestions] = useState<DataSourceType[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const debounceValue = useDebounce(inputValue,500)
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.trim()
-    setInputValue(value)
-    if (value) {
-      const res = fetchSuggestions(value)
+  useEffect(() => {
+    if (debounceValue) {
+      const res = fetchSuggestions(debounceValue)
       if (res instanceof Promise) {
         setIsLoading(true)
         res.then(data => {
           setIsLoading(false)
           setSuggestions(data)
+          console.log(data);
         })
       } else {
         setSuggestions(res)
@@ -37,6 +38,11 @@ export const AutoComplete: React.FC<AutoCompleteProps> = memo((props) => {
     } else {
       setSuggestions([])
     }
+  }, [debounceValue, fetchSuggestions])
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.trim()
+    setInputValue(value)
   }
 
   const handleClick = (item: DataSourceType) => {
