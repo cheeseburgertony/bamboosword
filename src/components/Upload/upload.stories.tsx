@@ -28,9 +28,9 @@ const filePromise = (file: File) => {
 export const Default: Story = {
   render: () => (
     <Upload
-      action='https://jsonplaceholder.typicode.com/posts'
-      onChange={action('onChange')}
-      beforeUpload={filePromise}
+      action='https://run.mocky.io/v3/34786f50-6906-4010-87fd-2a8d83b7f967'
+      // onChange={action('onChange')}
+      // beforeUpload={filePromise}
     />
   )
 }
