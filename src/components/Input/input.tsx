@@ -28,7 +28,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLElement>, 'size
  * 
  * 支持 HTMLInput 的所有基本属性
  */
-export const Input: React.FC<InputProps> = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const {
     disabled,
     size,
