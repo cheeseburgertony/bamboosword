@@ -3,17 +3,6 @@ import Button from '../Button/button';
 import axios from 'axios';
 import UploadList from './upload-list';
 
-export interface UploadProps {
-  action: string;
-  defaultFileList?: UploadFile[];
-  beforeUpload?: (file: File) => boolean | Promise<File>;
-  onProgress?: (percentage: number, file: File) => void;
-  onSuccess?: (data: any, file: File) => void;
-  onError?: (err: any, file: File) => void;
-  onChange?: (file: File) => void;
-  onRemove?: (file: UploadFile) => void;
-}
-
 export type UploadFileStatus = 'ready' | 'uploading' | 'success' | 'error'
 export interface UploadFile {
   uid: string;
@@ -26,8 +15,40 @@ export interface UploadFile {
   error?: any;
 }
 
+export interface UploadProps {
+  action: string;
+  defaultFileList?: UploadFile[];
+  beforeUpload?: (file: File) => boolean | Promise<File>;
+  onProgress?: (percentage: number, file: File) => void;
+  onSuccess?: (data: any, file: File) => void;
+  onError?: (err: any, file: File) => void;
+  onChange?: (file: File) => void;
+  onRemove?: (file: UploadFile) => void;
+  headers?: { [key: string]: any };
+  name?: string;
+  data?: { [key: string]: any };
+  withCredentials?: boolean;
+  accept?: string;
+  multiple?: boolean;
+}
+
 export const Upload: React.FC<UploadProps> = memo((props) => {
-  const { action, defaultFileList, onProgress, onSuccess, onError, beforeUpload, onChange, onRemove } = props
+  const {
+    action,
+    defaultFileList,
+    onProgress,
+    onSuccess,
+    onError,
+    beforeUpload,
+    onChange,
+    onRemove,
+    headers,
+    name = 'file',
+    data,
+    withCredentials,
+    accept,
+    multiple
+  } = props
   const [fileList, setFileList] = useState<UploadFile[]>(defaultFileList || [])
 
   const inputRef = useRef<HTMLInputElement>(null)
@@ -71,11 +92,17 @@ export const Upload: React.FC<UploadProps> = memo((props) => {
       percent: 0,
       raw: file
     }
-    setFileList([_file, ...fileList])
+    setFileList(prevList => [_file, ...prevList])
     const formData = new FormData()
-    formData.append(file.name, file)
+    formData.append(name || 'file', file)
+    if (data) {
+      Object.keys(data).forEach(key => {
+        formData.append(key, data[key])
+      })
+    }
     axios.post(action, formData, {
       headers: {
+        ...headers,
         'Content-Type': 'multipart/form-data'
       },
       // 上传百分比 
@@ -87,6 +114,7 @@ export const Upload: React.FC<UploadProps> = memo((props) => {
           if (onProgress) onProgress(percentage, file)
         }
       },
+      withCredentials
     }).then(res => {
       console.log(res);
       updateFileList(_file, { status: 'success', response: res.data })
@@ -139,6 +167,8 @@ export const Upload: React.FC<UploadProps> = memo((props) => {
         ref={inputRef}
         type="file"
         onChange={handleFileChange}
+        accept={accept}
+        multiple={multiple}
       />
       <UploadList
         fileList={fileList}
