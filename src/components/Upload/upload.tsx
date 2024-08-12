@@ -1,14 +1,17 @@
 import React, { ChangeEvent, memo, useRef, useState } from 'react'
 import Button from '../Button/button';
 import axios from 'axios';
+import UploadList from './upload-list';
 
 export interface UploadProps {
   action: string;
+  defaultFileList?: UploadFile[];
   beforeUpload?: (file: File) => boolean | Promise<File>;
   onProgress?: (percentage: number, file: File) => void;
   onSuccess?: (data: any, file: File) => void;
   onError?: (err: any, file: File) => void;
   onChange?: (file: File) => void;
+  onRemove?: (file: UploadFile) => void;
 }
 
 export type UploadFileStatus = 'ready' | 'uploading' | 'success' | 'error'
@@ -24,8 +27,8 @@ export interface UploadFile {
 }
 
 export const Upload: React.FC<UploadProps> = memo((props) => {
-  const { action, onProgress, onSuccess, onError, beforeUpload, onChange } = props
-  const [fileList, setFileList] = useState<UploadFile[]>([])
+  const { action, defaultFileList, onProgress, onSuccess, onError, beforeUpload, onChange, onRemove } = props
+  const [fileList, setFileList] = useState<UploadFile[]>(defaultFileList || [])
 
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -119,6 +122,14 @@ export const Upload: React.FC<UploadProps> = memo((props) => {
     })
   }
 
+  // 删除文件
+  const handleRemove = (file: UploadFile) => {
+    setFileList((prevList => {
+      return prevList.filter(item => item.uid !== file.uid)
+    }))
+    if (onRemove) onRemove(file)
+  }
+
   return (
     <div className='bamboosword-upload-componnet'>
       <Button btnType='primary' onClick={handleClick}>Upload File</Button>
@@ -128,6 +139,10 @@ export const Upload: React.FC<UploadProps> = memo((props) => {
         ref={inputRef}
         type="file"
         onChange={handleFileChange}
+      />
+      <UploadList
+        fileList={fileList}
+        onRemove={handleRemove}
       />
     </div>
   )
