@@ -1,0 +1,66 @@
+.bamboosword-form {
+  .bamboosword-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+
+    &.bamboosword-row-no-label {
+      flex-direction: row-reverse;
+    }
+
+    .bamboosword-form-item-label {
+      flex-basis: 30%;
+      text-align: right;
+      padding-right: 20px;
+
+      >label {
+        margin-bottom: 0;
+      }
+
+      >label.bamboosword-form-item-required:before {
+        display: inline-block;
+        margin-right: 4px;
+        color: $danger;
+        font-size: 14px;
+        font-family: SimSun, sans-serif;
+        line-height: 1;
+        content: "*";
+      }
+    }
+
+    .bamboosword-form-item {
+      flex-basis: 70%;
+      position: relative;
+
+      .bamboosword-input-wrapper {
+        margin-bottom: 0;
+      }
+
+      .bamboosword-form-item-has-error.bamboosword-form-item-control {
+        .bamboosword-input-inner {
+          border: 1px solid $danger;
+
+          &:focus {
+            box-shadow: $input-focus-box-shadow-error;
+          }
+        }
+      }
+
+      .bamboosword-form-item-explain {
+        position: absolute;
+        bottom: -25px;
+        left: 0;
+        line-height: 25px;
+        color: $danger;
+        min-width: 100px;
+      }
+    }
+  }
+
+  .bamboosword-form-submit-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+}
