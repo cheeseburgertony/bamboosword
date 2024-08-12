@@ -12,17 +12,17 @@ interface HeroesProps {
   luckyNum: number;
 }
 
-const meta = {
+const meta: Meta<typeof AutoComplete> = {
   title: 'AutoComplete',
   component: AutoComplete,
   tags: ['autodocs']
-} satisfies Meta<typeof AutoComplete>
+}
 export default meta
 
 type Story = StoryObj<typeof meta>
 
 
-export const SimpleAutoComplete: Story | any = {
+export const SimpleAutoComplete: Story = {
   render: (args: any) => {
     const hero = ['Iron Man', 'Spider-Man', 'Captain America', 'Thor', 'Hulk', 'Black Widow', 'Captain Marvel', 'Doctor Strange', 'Black Panther', 'Wolverine']
     const handleFetch = (query: string) => {
@@ -39,7 +39,7 @@ export const SimpleAutoComplete: Story | any = {
 }
 SimpleAutoComplete.storyName = '基本的搜索'
 
-export const CustomAutoComplete: Story | any = {
+export const CustomAutoComplete: Story = {
   render: (args: any) => {
     const heroes = [
       { name: 'Iron Man', luckyNum: 6 },
@@ -77,7 +77,7 @@ export const CustomAutoComplete: Story | any = {
 }
 CustomAutoComplete.storyName = '自定义搜索结果模版'
 
-export const AjaxAutoComplete: Story | any = {
+export const AjaxAutoComplete: Story = {
   render: (args: any) => {
     const handleFetch = (query: string) => {
       return fetch(`https://api.github.com/search/users?q=${query}`)
@@ -86,7 +86,7 @@ export const AjaxAutoComplete: Story | any = {
           return items.slice(0, 10).map((item: any) => ({ value: item.login, ...item }))
         })
     }
-  
+
     const renderOption = (item: DataSourceType) => {
       const itemWithGithub = item as DataSourceType<GithubUserProps>
       return (

@@ -1,16 +1,16 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { Icon } from './icon'
 
-const meta = {
+const meta: Meta<typeof Icon> = {
   title: 'Icon',
   component: Icon,
   tags: ['autodocs'],
-} satisfies Meta<typeof Icon>
+}
 export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const DefaultIcon: Story | any = {
+export const DefaultIcon: Story = {
   render: (args: any) => (
     <>
       <Icon {...args} icon="house" size="3x" />
@@ -22,7 +22,7 @@ export const DefaultIcon: Story | any = {
 }
 DefaultIcon.storyName = '默认图标'
 
-export const ThemeIcon: Story | any = {
+export const ThemeIcon: Story = {
   render: (args: any) => (
     <>
       <Icon {...args} icon="house" size="3x" theme='primary' />
@@ -34,7 +34,7 @@ export const ThemeIcon: Story | any = {
 }
 ThemeIcon.storyName = '不同主题的Icon'
 
-export const CustomIcon: Story | any = {
+export const CustomIcon: Story = {
   render: (args: any) => (
     <>
       <Icon {...args} icon="spinner" size="3x" theme="primary" spin />
