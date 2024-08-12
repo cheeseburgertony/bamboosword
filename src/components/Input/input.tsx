@@ -5,15 +5,15 @@ import Icon from '../Icon/icon'
 
 type InputSize = 'lg' | 'sm'
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLElement>, 'size'> {
-  /**是否禁用 Input */
+  /** 是否禁用 Input */
   disabled?: boolean;
-  /**设置 input 大小，支持 lg 或者是 sm */
+  /** 设置 input 大小，支持 lg 或者是 sm */
   size?: InputSize;
-  /**添加图标，在右侧悬浮添加一个图标，用于提示 */
+  /** 添加图标，在右侧悬浮添加一个图标，用于提示 */
   icon?: IconProp;
-  /**添加前缀 用于配置一些固定组合 */
+  /** 添加前缀 用于配置一些固定组合 */
   prepend?: string | ReactElement;
-  /**添加后缀 用于配置一些固定组合 */
+  /** 添加后缀 用于配置一些固定组合 */
   append?: string | ReactElement;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
@@ -28,7 +28,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLElement>, 'size
  * 
  * 支持 HTMLInput 的所有基本属性
  */
-export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+export const Input: React.FC<InputProps> = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const {
     disabled,
     size,

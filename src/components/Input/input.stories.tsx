@@ -11,15 +11,7 @@ const meta = {
         <Story />
       </div>
     ),
-  ],
-  args: {
-    placeholder: '',
-    disabled: false,
-    icon: undefined,
-    size: undefined,
-    prepend: '',
-    append: ''
-  }
+  ]
 } satisfies Meta<typeof Input>
 export default meta
 
