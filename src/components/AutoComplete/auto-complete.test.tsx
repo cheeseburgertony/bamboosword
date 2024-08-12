@@ -1,112 +1,55 @@
 import React from 'react'
-// import { config } from 'react-transition-group'
-// import { render, RenderResult, fireEvent, waitFor, screen } from '@testing-library/react'
-// import { AutoComplete, AutoCompleteProps, DataSourceType } from './auto-complete'
+import { render, fireEvent, waitFor, screen } from '@testing-library/react'
+import AutoComplete, { AutoCompleteProps, DataSourceType } from './auto-complete'
 
-// config.disabled = true
-// jest.mock('../Icon/icon', () => {
-//   return (props: any) => {
-//     return <span onClick={props.onClick}>{props.icon}</span>
-//   }
-// })
-// const testArray = [
-//   { value: 'ab', number: 11 },
-//   { value: 'abc', number: 1 },
-//   { value: 'b', number: 4 },
-//   { value: 'c', number: 15 },
-// ]
-// const renderOption = (item: DataSourceType) => {
-//   const itemWithNumber = item as DataSourceType<{ value: string; number: number }>
-//   return (
-//     <>name: {itemWithNumber.value}</>
-//   )
-// }
-// const testProps: AutoCompleteProps = {
-//   fetchSuggestions: (query) => { return testArray.filter(item => item.value.includes(query)) },
-//   onSelect: jest.fn(),
-//   placeholder: 'auto-complete',
-// }
-// const testPropsWithCustomRender: AutoCompleteProps = {
-//   ...testProps,
-//   placeholder: 'auto-complete-2',
-//   renderOption
-// }
+const testProps: AutoCompleteProps = {
+  fetchSuggestions: jest.fn((query) => [{ value: 'ab', number: 11 }, { value: 'abc', number: 1 }, { value: 'b', number: 4 }]),
+  onSelect: jest.fn(),
+  placeholder: 'auto-complete'
+}
 
-// // let screen: RenderResult, 
-// let inputNode: HTMLInputElement
+const testPropsWithCustomRender: AutoCompleteProps = {
+  ...testProps,
+  renderOption: (item: DataSourceType) => <h1>name: {item.value}</h1>
+}
 
-// describe('test AutoComplete component', () => {
-//   beforeEach(() => {
-//     render(<AutoComplete {...testProps} />)
-//     inputNode = screen.getByPlaceholderText('auto-complete') as HTMLInputElement
-//   })
-//   it('test basic AutoComplete behavior', async () => {
-//     // input change
-//     fireEvent.change(inputNode, { target: { value: 'a' } })
-//     await waitFor(() => {
-//       expect(screen.queryByText('ab')).toBeInTheDocument()
-//     })
-//     // should have two suggestion items
-//     // expect(screen.container.querySelectorAll('.suggestion-item').length).toEqual(2)
-//     //click the first item
-//     fireEvent.click(screen.getByText('ab'))
-//     expect(testProps.onSelect).toHaveBeenCalledWith({ value: 'ab', number: 11 })
-//     expect(screen.queryByText('ab')).not.toBeInTheDocument()
-//     //fill the input
-//     expect(inputNode.value).toBe('ab')
-//   })
-//   it('should provide keyboard support', async () => {
-//     // input change
-//     fireEvent.change(inputNode, { target: { value: 'a' } })
-//     await waitFor(() => {
-//       expect(screen.queryByText('ab')).toBeInTheDocument()
-//     })
-//     const firstResult = screen.queryByText('ab')
-//     const secondResult = screen.queryByText('abc')
+describe('test AutoComplete component', () => {
+  it('fetchSuggestions should be called with correct input value', async () => {
+    const fetchSuggestions = jest.fn()
+    render(<AutoComplete fetchSuggestions={fetchSuggestions} placeholder="test-fetch" />)
+    const inputNode = screen.getByPlaceholderText('test-fetch') as HTMLInputElement
+    fireEvent.change(inputNode, { target: { value: 'a' } })
+    await waitFor(() => {
+      expect(fetchSuggestions).toHaveBeenCalledWith('a')
+    })
+  })
 
-//     // arrow down
-//     fireEvent.keyDown(inputNode, { keyCode: 40 })
-//     expect(firstResult).toHaveClass('is-active')
-//     //arrow down 
-//     fireEvent.keyDown(inputNode, { keyCode: 40 })
-//     expect(secondResult).toHaveClass('is-active')
-//     //arrow up
-//     fireEvent.keyDown(inputNode, { keyCode: 38 })
-//     expect(firstResult).toHaveClass('is-active')
-//     // press enter
-//     fireEvent.keyDown(inputNode, { keyCode: 13 })
-//     expect(testProps.onSelect).toHaveBeenCalledWith({ value: 'ab', number: 11 })
-//     expect(screen.queryByText('ab')).not.toBeInTheDocument()
-//   })
-//   it('click outside should hide the dropdown', async () => {
-//     // input change
-//     fireEvent.change(inputNode, { target: { value: 'a' } })
-//     await waitFor(() => {
-//       expect(screen.queryByText('ab')).toBeInTheDocument()
-//     })
-//     fireEvent.click(document)
-//     expect(screen.queryByText('ab')).not.toBeInTheDocument()
-//   })
-//   it('renderOption should generate the right template', async () => {
-//     // const render(<AutoComplete {...testPropsWithCustomRender}/>)
-//     const inputNode = screen.getByPlaceholderText('auto-complete-2') as HTMLInputElement
-//     fireEvent.change(inputNode, { target: { value: 'a' } })
-//     await waitFor(() => {
-//       expect(screen.queryByText('name: ab')).toBeInTheDocument()
-//     })
-//   })
-//   it('async fetchSuggestions should works fine', async () => {
-//     const testPropsWithPromise: AutoCompleteProps = {
-//       ...testProps,
-//       fetchSuggestions: jest.fn((query) => { return Promise.resolve(testArray.filter(item => item.value.includes(query))) }),
-//       placeholder: 'auto-complete-3',
-//     }
-//     render(<AutoComplete {...testPropsWithPromise} />)
-//     const inputNode = screen.getByPlaceholderText('auto-complete-3') as HTMLInputElement
-//     fireEvent.change(inputNode, { target: { value: 'a' } })
-//     await waitFor(() => {
-//       expect(testPropsWithPromise.fetchSuggestions).toHaveBeenCalled()
-//       expect(screen.queryByText('ab')).toBeInTheDocument()
-//     })
-//   })
-// })
+  it('should trigger onSelect with correct item', async () => {
+    const onSelect = jest.fn()
+    render(<AutoComplete {...testProps} onSelect={onSelect} />)
+    const inputNode = screen.getByPlaceholderText('auto-complete') as HTMLInputElement
+    fireEvent.change(inputNode, { target: { value: 'a' } })
+    await waitFor(() => {
+      expect(screen.getByText('ab')).toBeInTheDocument()
+    })
+    fireEvent.click(screen.getByText('ab'))
+    expect(onSelect).toHaveBeenCalledWith({ value: 'ab', number: 11 })
+  })
+
+  it('onChange should be called with correct input value', async () => {
+    const onChange = jest.fn()
+    render(<AutoComplete {...testProps} onChange={onChange} />)
+    const inputNode = screen.getByPlaceholderText('auto-complete') as HTMLInputElement
+    fireEvent.change(inputNode, { target: { value: 'a' } })
+    expect(onChange).toHaveBeenCalledWith('a')
+  })
+
+  it('renderOption should be used to display suggestions', async () => {
+    render(<AutoComplete {...testPropsWithCustomRender} />)
+    const inputNode = screen.getByPlaceholderText('auto-complete-2') as HTMLInputElement
+    fireEvent.change(inputNode, { target: { value: 'a' } })
+    await waitFor(() => {
+      expect(screen.getByText('name: ab')).toBeInTheDocument()
+    })
+  })
+})
