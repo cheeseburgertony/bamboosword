@@ -11,13 +11,26 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
+const checkSize = (file: File) => {
+  if (Math.round(file.size / 1024) > 50) {
+    alert('file too big')
+    return false
+  } else {
+    return true
+  }
+}
+
+const filePromise = (file: File) => {
+  const newFile = new File([file], 'new_name.docx', { type: file.type })
+  return Promise.resolve(newFile)
+}
+
 export const Default: Story = {
   render: () => (
     <Upload
       action='https://jsonplaceholder.typicode.com/posts'
-      onProgress={action('progess')}
-      onSuccess={action('success')}
-      onError={action('error')}
+      onChange={action('onChange')}
+      beforeUpload={filePromise}
     />
   )
 }
