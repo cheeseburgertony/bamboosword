@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { Upload } from './upload'
+import Icon from '../Icon/icon'
 
 const meta: Meta<typeof Upload> = {
   title: 'Upload',
@@ -34,6 +35,11 @@ export const Default: Story = {
       headers={{ 'X-Powered-By': 'bamboosword' }}
       accept='.jpg'
       multiple
-    />
+      drag
+    >
+      <Icon icon="upload" size="5x" theme="secondary" />
+      <br />
+      <p>点击或者拖动到此区域进行上传</p>
+    </Upload>
   )
 }

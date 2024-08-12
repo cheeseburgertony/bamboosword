@@ -2,6 +2,7 @@ import React, { ChangeEvent, memo, useRef, useState } from 'react'
 import Button from '../Button/button';
 import axios from 'axios';
 import UploadList from './upload-list';
+import Dragger from './dragger';
 
 export type UploadFileStatus = 'ready' | 'uploading' | 'success' | 'error'
 export interface UploadFile {
@@ -30,6 +31,8 @@ export interface UploadProps {
   withCredentials?: boolean;
   accept?: string;
   multiple?: boolean;
+  drag?: boolean;
+  children?: React.ReactNode;
 }
 
 export const Upload: React.FC<UploadProps> = memo((props) => {
@@ -47,7 +50,9 @@ export const Upload: React.FC<UploadProps> = memo((props) => {
     data,
     withCredentials,
     accept,
-    multiple
+    multiple,
+    drag,
+    children
   } = props
   const [fileList, setFileList] = useState<UploadFile[]>(defaultFileList || [])
 
@@ -159,17 +164,28 @@ export const Upload: React.FC<UploadProps> = memo((props) => {
   }
 
   return (
-    <div className='bamboosword-upload-componnet'>
-      <Button btnType='primary' onClick={handleClick}>Upload File</Button>
-      <input
-        className='bamboosword-file-input'
-        style={{ display: 'none' }}
-        ref={inputRef}
-        type="file"
-        onChange={handleFileChange}
-        accept={accept}
-        multiple={multiple}
-      />
+    <div className='bamboosword-upload-component'>
+      <div className="bamboosword-upload-input"
+        style={{ display: 'inline-block' }}
+        onClick={handleClick}
+      >
+        {
+          drag ? (
+            <Dragger onFile={files => uploadFilesHandle(files)}>
+              {children}
+            </Dragger>
+          ) : children
+        }
+        <input
+          className='bamboosword-file-input'
+          style={{ display: 'none' }}
+          ref={inputRef}
+          type="file"
+          onChange={handleFileChange}
+          accept={accept}
+          multiple={multiple}
+        />
+      </div>
       <UploadList
         fileList={fileList}
         onRemove={handleRemove}
