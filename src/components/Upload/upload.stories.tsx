@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { action } from '@storybook/addon-actions'
 import { Upload } from './upload'
 import Icon from '../Icon/icon'
 import Button from '../Button/button'
