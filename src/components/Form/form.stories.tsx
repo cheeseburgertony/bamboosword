@@ -18,8 +18,8 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
-  args: {
-    children: 'Default Button'
-  }
+  // args: {
+  //   children: 'Default Button'
+  // }
 }
 Default.storyName = '默认按钮样式'
