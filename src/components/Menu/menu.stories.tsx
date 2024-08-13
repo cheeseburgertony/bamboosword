@@ -1,7 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { Menu } from './menu'
-import MenuItem from './menu-item'
-import SubMenu from './sub-menu'
+import { Menu } from './index'
 
 const meta = {
   title: 'Menu',
@@ -18,23 +16,23 @@ export const DefaultMenu: Story = {
   },
   render: (args) => (
     <Menu {...args} defaultIndex='0'>
-      <MenuItem>
-        MenuItem 1
-      </MenuItem>
-      <MenuItem>
-        MenuItem 2
-      </MenuItem>
-      <MenuItem disabled>
+      <Menu.Item>
+        Menu.Item 1
+      </Menu.Item>
+      <Menu.Item>
+        Menu.Item 2
+      </Menu.Item>
+      <Menu.Item disabled>
         Disabled
-      </MenuItem>
-      <SubMenu title='下拉选项'>
-        <MenuItem>
+      </Menu.Item>
+      <Menu.SubMenu title='下拉选项'>
+        <Menu.Item>
           下拉选项 1
-        </MenuItem>
-        <MenuItem>
+        </Menu.Item>
+        <Menu.Item>
           下拉选项 2
-        </MenuItem>
-      </SubMenu>
+        </Menu.Item>
+      </Menu.SubMenu>
     </Menu>
   )
 }
@@ -47,23 +45,23 @@ export const VerticalMenu: Story = {
   },
   render: (args) => (
     <Menu {...args} defaultIndex='0' mode='vertical'>
-      <MenuItem>
-        MenuItem 1
-      </MenuItem>
-      <MenuItem>
-        MenuItem 2
-      </MenuItem>
-      <MenuItem disabled>
+      <Menu.Item>
+        Menu.Item 1
+      </Menu.Item>
+      <Menu.Item>
+        Menu.Item 2
+      </Menu.Item>
+      <Menu.Item disabled>
         Disabled
-      </MenuItem>
-      <SubMenu title='点击下拉选项'>
-        <MenuItem>
+      </Menu.Item>
+      <Menu.SubMenu title='点击下拉选项'>
+        <Menu.Item>
           下拉选项 1
-        </MenuItem>
-        <MenuItem>
+        </Menu.Item>
+        <Menu.Item>
           下拉选项 2
-        </MenuItem>
-      </SubMenu>
+        </Menu.Item>
+      </Menu.SubMenu>
     </Menu>
   )
 }
@@ -76,25 +74,25 @@ export const VerticalOpenMenu: Story = {
     defaultOpenSubMenus: ['3']
   },
   render: (args) => (
-    <Menu {...args} defaultIndex='0' mode='vertical' defaultOpenSubMenus={['3']}>
-      <MenuItem>
-        MenuItem 1
-      </MenuItem>
-      <MenuItem>
-        MenuItem 2
-      </MenuItem>
-      <MenuItem disabled>
+    <Menu {...args} defaultIndex='0' mode='vertical' defaultOpenSubMenus={['3']} >
+      <Menu.Item>
+        Menu.Item 1
+      </Menu.Item>
+      <Menu.Item>
+        Menu.Item 2
+      </Menu.Item>
+      <Menu.Item disabled>
         Disabled
-      </MenuItem>
-      <SubMenu title='默认展开下拉选项'>
-        <MenuItem>
+      </Menu.Item>
+      <Menu.SubMenu title='默认展开下拉选项'>
+        <Menu.Item>
           下拉选项 1
-        </MenuItem>
-        <MenuItem>
+        </Menu.Item>
+        <Menu.Item>
           下拉选项 2
-        </MenuItem>
-      </SubMenu>
-    </Menu>
+        </Menu.Item>
+      </Menu.SubMenu>
+    </Menu >
   )
 }
 VerticalOpenMenu.storyName = '纵向默认展开Menu'

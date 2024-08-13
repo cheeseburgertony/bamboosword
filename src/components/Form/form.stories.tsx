@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { Form, IFormRef } from './form'
+import { IFormRef } from './form'
+import { Form } from './index'
 import { CustomRule } from './useStore'
-import { FormItem } from './form-item'
 import Input from '../Input/input'
 import Button from '../Button/button'
 import Select from '../Select/select'
@@ -11,7 +11,7 @@ import { useRef } from 'react'
 const meta: Meta<typeof Form> = {
   title: 'Form',
   component: Form,
-  subcomponents: { 'FormItem': FormItem },
+  subcomponents: { 'FormItem': Form.Item },
   tags: ['autodocs'],
   decorators: [
     (Story) => (
@@ -47,12 +47,12 @@ export const BasicForm: Story = {
   render: (args) => {
     return (
       <Form {...args} >
-        <FormItem label='用户名' name='name' rules={[{ type: 'string', required: true, min: 3 }]}>
+        <Form.Item label='用户名' name='name' rules={[{ type: 'string', required: true, min: 3 }]}>
           <Input />
-        </FormItem>
-        <FormItem label='密码' name='password' rules={[{ type: 'string', required: true, min: 3, max: 8 }]}>
+        </Form.Item>
+        <Form.Item label='密码' name='password' rules={[{ type: 'string', required: true, min: 3, max: 8 }]}>
           <Input type="password" />
-        </FormItem>
+        </Form.Item>
         <div className='bamboosword-form-submit-area'>
           <Button type="submit" btnType='primary'>登陆</Button>
         </div>
@@ -69,13 +69,13 @@ export const RegisterForm: Story = {
     }
     return (
       <Form {...args} initialValues={initialValues}>
-        <FormItem label='邮件' name='email' rules={[{ type: 'email', required: true }]}>
+        <Form.Item label='邮件' name='email' rules={[{ type: 'email', required: true }]}>
           <Input />
-        </FormItem>
-        <FormItem label='密码' name='password' rules={[{ type: 'string', required: true, min: 3, max: 8 }]}>
+        </Form.Item>
+        <Form.Item label='密码' name='password' rules={[{ type: 'string', required: true, min: 3, max: 8 }]}>
           <Input type="password" />
-        </FormItem>
-        <FormItem
+        </Form.Item>
+        <Form.Item
           label='性别'
           name='gender'
           rules={[{ type: 'string', required: true }]}
@@ -86,16 +86,16 @@ export const RegisterForm: Story = {
             <Option value="男" />
             <Option value="女" />
           </Select>
-        </FormItem>
+        </Form.Item>
         <div className='agreement-section' style={{ 'display': 'flex', 'justifyContent': 'center' }}>
-          <FormItem
+          <Form.Item
             name='agreement'
             rules={[{ type: 'enum', enum: [true], message: '请同意协议' }]}
             getValueFromEvent={(e) => e.target.checked}
             valuePropName='checked'
           >
             <input type="checkbox" />
-          </FormItem>
+          </Form.Item>
           <span className="agree-text">注册即代表你同意<a href='https://cheeseburgertony.github.io'>用户协议</a></span>
         </div>
         <div className='bamboosword-form-submit-area'>
@@ -105,7 +105,7 @@ export const RegisterForm: Story = {
     )
   }
 }
-RegisterForm.storyName = '注册表单，支持多种FormItem组件'
+RegisterForm.storyName = '注册表单，支持多种Form.Item组件'
 
 export const FullForm: Story = {
   render: (args) => {
@@ -120,24 +120,24 @@ export const FullForm: Story = {
       <Form initialValues={{ username: 'bamboosword', agreement: false }} {...args} ref={ref}>
         {({ isValid, isSubmitting }) => (
           <>
-            <FormItem label='用户名' name='username' rules={[{ type: 'email', required: true }]}>
+            <Form.Item label='用户名' name='username' rules={[{ type: 'email', required: true }]}>
               <Input />
-            </FormItem>
-            <FormItem label='密码' name='password' rules={[{ type: 'string', required: true, min: 3, max: 8 }]}>
+            </Form.Item>
+            <Form.Item label='密码' name='password' rules={[{ type: 'string', required: true, min: 3, max: 8 }]}>
               <Input type='password' />
-            </FormItem>
-            <FormItem label='重复密码' name='confirmPwd' rules={confirmRules}>
+            </Form.Item>
+            <Form.Item label='重复密码' name='confirmPwd' rules={confirmRules}>
               <Input type='password' />
-            </FormItem>
+            </Form.Item>
             <div className='agreement-section' style={{ 'display': 'flex', 'justifyContent': 'center' }}>
-              <FormItem
+              <Form.Item
                 name='agreement'
                 valuePropName='checked'
                 getValueFromEvent={(e) => e.target.checked}
                 rules={[{ type: 'enum', enum: [true], message: '请同意协议' }]}
               >
                 <input type="checkbox" />
-              </FormItem>
+              </Form.Item>
               <span className="agree-text">注册即代表你同意<a href='https://cheeseburgertony.github.io'>用户协议</a></span>
             </div>
             <div className='bamboosword-form-submit-area'>

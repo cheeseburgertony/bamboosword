@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { Select } from './select'
-import Option from './option'
+import { Select } from './index'
 
 const meta: Meta<typeof Select> = {
   title: 'Select',
@@ -24,11 +23,11 @@ export const DefaultSelect: Story = {
       {...args}
       placeholder="请选择"
     >
-      <Option value="Hello" />
-      <Option value="Hello2" />
-      <Option value="Hello3" />
-      <Option value="Disabled" disabled />
-      <Option value="Hello5" />
+      <Select.Option value="Hello" />
+      <Select.Option value="Hello2" />
+      <Select.Option value="Hello3" />
+      <Select.Option value="Disabled" disabled />
+      <Select.Option value="Hello5" />
     </Select>
   )
 }
@@ -41,11 +40,11 @@ export const MultipleSelect: Story = {
       placeholder="支持多选的Select"
       multiple
     >
-      <Option value="Hello" />
-      <Option value="Hello2" />
-      <Option value="Hello3" />
-      <Option value="Bamboosword" />
-      <Option value="Bamboosword2" />
+      <Select.Option value="Hello" />
+      <Select.Option value="Hello2" />
+      <Select.Option value="Hello3" />
+      <Select.Option value="Bamboosword" />
+      <Select.Option value="Bamboosword2" />
     </Select>
   )
 }
@@ -58,9 +57,9 @@ export const DisabledSelect: Story = {
       placeholder="被禁用了！"
       disabled
     >
-      <Option value="Hello" />
-      <Option value="Hello2" />
-      <Option value="Hello3" />
+      <Select.Option value="Hello" />
+      <Select.Option value="Hello2" />
+      <Select.Option value="Hello3" />
     </Select>
   )
 }

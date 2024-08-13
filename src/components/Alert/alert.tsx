@@ -26,13 +26,13 @@ export interface AlertProps {
  * ~~~
 */
 export const Alert: FC<AlertProps> = (props) => {
-  const [ hide, setHide ] = useState(false)
+  const [hide, setHide] = useState(false)
   const {
     title,
     description,
-    type,
+    type = 'default',
     onClose,
-    closable
+    closable = true
   } = props
 
   const classes = classNames('bamboosword-alert', {
@@ -48,7 +48,7 @@ export const Alert: FC<AlertProps> = (props) => {
     }
     setHide(true)
   }
-  
+
   return (
     <Transition
       in={!hide}
@@ -58,14 +58,10 @@ export const Alert: FC<AlertProps> = (props) => {
       <div className={classes}>
         <span className={titleClass}>{title}</span>
         {description && <p className="bamboosword-alert-desc">{description}</p>}
-        {closable && <span className="bamboosword-alert-close" onClick={handleClose}><Icon icon="times"/></span>}
+        {closable && <span className="bamboosword-alert-close" onClick={handleClose}><Icon icon="times" /></span>}
       </div>
     </Transition>
   )
 }
 
-Alert.defaultProps = {
-  type: 'default',
-  closable: true,
-}
 export default Alert;
