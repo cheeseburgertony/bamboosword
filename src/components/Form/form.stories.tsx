@@ -11,7 +11,34 @@ import { useRef } from 'react'
 const meta: Meta<typeof Form> = {
   title: 'Form',
   component: Form,
-  subcomponents: { 'FormItem': Form.Item },
+  argTypes: {
+    name: {
+      control: 'text',
+      description: '表单名称，会作为表单字段 id 前缀使用',
+      type: { name: 'string', required: false },
+    },
+    initialValues: {
+      control: 'object',
+      description: '表单默认值，只有初始化以及重置时生效',
+      type: { name: 'object', value: {}, required: false },
+    },
+    children: {
+      control: 'text',
+      description: '表单的子元素，可以是ReactNode或RenderProps',
+      type: { name: 'other', value: 'ReactNode', required: false },
+    },
+    onFinish: {
+      action: 'onFinish',
+      description: '提交表单且数据验证成功后回调事件',
+      type: { name: 'function', required: false },
+    },
+    onFinishFailed: {
+      action: 'onFinishFailed',
+      description: '提交表单且数据验证失败后回调事件',
+      type: { name: 'function', required: false },
+    },
+  },
+  subcomponents: { 'FormItem': Form.Item as React.ComponentType<unknown> },
   tags: ['autodocs'],
   decorators: [
     (Story) => (

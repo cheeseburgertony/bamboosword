@@ -22,7 +22,7 @@ export type IFormRef = Omit<ReturnType<typeof useStore>, 'fields' | 'dispatch' |
 
 export const FormContext = createContext<IFormContext>({} as IFormContext)
 
-export const Form: React.FC<FormProps> = forwardRef<IFormRef, FormProps>((props, ref) => {
+export const Form = forwardRef<IFormRef, FormProps>((props, ref) => {
   const { name = 'bamboosword', children, initialValues, onFinish, onFinishFailed } = props
   const { form, fields, dispatch, ...restProps } = useStore(initialValues)
   const { validateField, validateAllFields } = restProps

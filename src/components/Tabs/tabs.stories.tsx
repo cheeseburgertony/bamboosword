@@ -5,7 +5,7 @@ import Icon from '../Icon/icon'
 const meta: Meta<typeof Tabs> = {
   title: 'Tabs',
   component: Tabs,
-  subcomponents: { 'TabItem': Tabs.Item },
+  subcomponents: { 'TabItem': Tabs.Item as React.ComponentType<unknown>},
   tags: ['autodocs']
 }
 export default meta
