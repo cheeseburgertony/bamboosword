@@ -49,12 +49,8 @@
     "build-css": "sass ./src/styles/index.scss ./dist/index.css",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "prepublishOnly": "npm run lint &&npm run build"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
+    "prepublishOnly": "npm run lint &&npm run build",
+    "prepare": "husky"
   },
   "eslintConfig": {
     "extends": [
