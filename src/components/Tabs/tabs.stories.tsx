@@ -6,7 +6,7 @@ const meta: Meta<typeof Tabs> = {
   title: 'Tabs',
   component: Tabs,
   subcomponents: { 'TabItem': Tabs.Item },
-  tags: ['autodocs'],
+  tags: ['autodocs']
 }
 export default meta
 

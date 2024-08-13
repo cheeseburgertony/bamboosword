@@ -2,6 +2,9 @@ import { FC } from 'react'
 import OriginTabs, { TabsProps } from './tabs'
 import TabItem, { TabItemProps } from './tab-item'
 
+export * from './tabs'
+export * from './tab-item'
+
 export type ITabsComponent = FC<TabsProps> & {
   Item: FC<TabItemProps>
 }
