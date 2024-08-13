@@ -4,8 +4,9 @@
   "description": "React components library",
   "author": "cheeseburgertony",
   "private": false,
-  "main": "dist/index.js",
-  "module": "dist/index.js",
+  "main": "dist/index.es.js",
+  "module": "dist/index.es.js",
+  "unpkg": "dist/index.umd.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
   "keywords": [
@@ -41,7 +42,7 @@
     "start": "react-scripts start",
     "lint": "eslint --ext js,ts,tsx src --max-warnings 5",
     "clean": "rimraf ./dist",
-    "build": "npm run clean && npm run build-ts && npm run build-css",
+    "build": "npm run clean && npm run build-es && npm run build-umd",
     "test": "react-scripts test",
     "test:nowatch": "cross-env CI=true react-scripts test",
     "eject": "react-scripts eject",
@@ -51,8 +52,8 @@
     "build-storybook": "storybook build",
     "prepublishOnly": "npm run lint &&npm run build",
     "prepare": "husky",
-    "build-es": "rollup --config rollup.config.js",
-    "build-umd": "rollup --config rollup.umd.config.js"
+    "build-es": "rollup --config rollup/rollup.esm.config.js",
+    "build-umd": "rollup --config rollup/rollup.umd.config.js"
   },
   "eslintConfig": {
     "extends": [
