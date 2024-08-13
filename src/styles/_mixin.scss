@@ -80,3 +80,9 @@
   border-top-left-radius: $raduis;
   border-top-right-radius: $raduis;
 }
+
+@mixin alert-style($background, $border, $color) {
+  color: $color;
+  background: $background;
+  border-color: $border;
+}
