@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react"
-import Button, { ButtonProps, ButtonSize, ButtonType } from "./button"
+import Button, { ButtonProps } from "./button"
 
 const defaultProps = {
   // jest提供的模拟触发后调用一个函数(便于测试捕获)
