@@ -1,6 +1,10 @@
+# 使用 Ubuntu 20.04 LTS 环境
+os: ubuntu
+dist: focal  # Ubuntu 20.04 LTS, 如果需要更高版本，可以选择 `jammy`（Ubuntu 22.04 LTS）
+
 language: node_js
 node_js:
-  - "16"
+  - "20"
 cache:
   directories:
   - node_modules
