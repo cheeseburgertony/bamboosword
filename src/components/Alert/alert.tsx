@@ -34,18 +34,21 @@ export const Alert: FC<AlertProps> = (props) => {
     onClose,
     closable
   } = props
+
   const classes = classNames('bamboosword-alert', {
     [`bamboosword-alert-${type}`]: type,
   })
   const titleClass = classNames('bamboosword-alert-title', {
     'bold-title': description
   })
+
   const handleClose = (e: React.MouseEvent) => {
     if (onClose) {
       onClose()
     }
     setHide(true)
   }
+  
   return (
     <Transition
       in={!hide}
