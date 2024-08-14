@@ -1,6 +1,6 @@
 {
-  "name": "bamboosword-demo",
-  "version": "0.1.1",
+  "name": "bamboosword",
+  "version": "0.1.2",
   "description": "React components library",
   "author": "cheeseburgertony",
   "private": false,
@@ -14,10 +14,10 @@
     "UI",
     "React"
   ],
-  "homepage": "https://github.com/cheeseburgertony/bamboosword",
+  "homepage": "https://cheeseburgertony.cn/bamboosword/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cheeseburgertony/bamboosword.git"
+    "url": "https://github.com/cheeseburgertony/bamboosword"
   },
   "files": [
     "dist"
