@@ -44,7 +44,7 @@ export const FormItem: FC<FormItemProps> = (props) => {
   useEffect(() => {
     const value = (initialValues && initialValues[name]) || ''
     dispatch({ type: 'addField', name, value: { label, name, value, rules: rules || [], errors: [], isValid: true } })
-  }, [dispatch, initialValues, label, name, rules])
+  }, [dispatch, initialValues, label, name])
 
   // 获取store 对应的 value
   const fieldState = fields[name]
