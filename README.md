@@ -57,7 +57,7 @@ function App() {
 
 ## 文档和示例
 
-查看我们的 [Storybook 文档](https://cheeseburgertony.cn/bamboosword/) 获取详细的使用示例和 API 文档。
+查看我们的 [Storybook 文档](https://cheeseburgertony.github.io/bamboosword/) 获取详细的使用示例和 API 文档。
 
 ## 开发
 
@@ -134,10 +134,6 @@ npm test -- --coverage
 3. 提交你的更改: `git commit -m 'Add some amazing feature'`
 4. 推送到分支: `git push origin feature/amazing-feature`
 5. 提交 Pull Request
-
-## 许可证
-
-[MIT](https://github.com/cheeseburgertony/bamboosword/blob/main/LICENSE)
 
 ## 作者
 
