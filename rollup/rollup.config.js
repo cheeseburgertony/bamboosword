@@ -16,7 +16,7 @@ const config = {
     commonjs(),
     json(),
     typescript({ tsconfigOverride: overrides }),
-    sass({ output: 'dist/input.css' })
+    sass({ output: 'dist/index.css' })
   ],
 }
 
