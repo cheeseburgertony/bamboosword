@@ -1,4 +1,4 @@
-正在收集工作区信息# BambooSword UI 组件库
+# BambooSword UI 组件库
 
 BambooSword 是一个基于 React 和 TypeScript 打造的现代组件库。它旨在提供高质量的 UI 组件，帮助开发者快速构建漂亮的 Web 应用。
 
